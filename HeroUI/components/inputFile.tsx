@@ -5,16 +5,18 @@ import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
 import { Spacer } from "@heroui/spacer";
 
-export default function AudioUpload() {
+export default function MediaUpload() {
   const [fileName, setFileName] = useState<string | null>(null);
-  const [audioURL, setAudioURL] = useState<string | null>(null);
+  const [mediaURL, setMediaURL] = useState<string | null>(null);
+  const [fileType, setFileType] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const handleFile = (file: File) => {
-    if (file && file.type.startsWith("audio/")) {
+    if (file && (file.type.startsWith("audio/") || file.type.startsWith("video/"))) {
       setFileName(file.name);
-      setAudioURL(URL.createObjectURL(file));
+      setMediaURL(URL.createObjectURL(file));
+      setFileType(file.type);
     } else {
-      alert("Por favor, envie um arquivo de áudio válido 🎵");
+      alert("Por favor, envie um arquivo de áudio ou vídeo válido 🎵🎬");
     }
   };
 
@@ -34,9 +36,10 @@ export default function AudioUpload() {
 
   const handleRemove = () => {
     setFileName(null);
-    setAudioURL(null);
+    setMediaURL(null);
+    setFileType(null);
     // limpa o input de arquivo
-    const input = document.getElementById("audio-upload") as HTMLInputElement;
+    const input = document.getElementById("media-upload") as HTMLInputElement;
     if (input) input.value = "";
   };
 
@@ -58,9 +61,9 @@ export default function AudioUpload() {
       <CardBody className="flex flex-col items-center justify-center gap-4">
         {/* Input de arquivo escondido */}
         <input
-          id="audio-upload"
+          id="media-upload"
           type="file"
-          accept="audio/*"
+          accept="audio/*,video/*"
           onChange={handleFileChange}
           style={{ display: "none" }}
         />
@@ -68,46 +71,58 @@ export default function AudioUpload() {
         {/* Área de drag-and-drop */}
         <div
           className="w-full h-30 flex flex-col items-center justify-center cursor-pointer"
-          onClick={() => document.getElementById("audio-upload")?.click()}
+          onClick={() => document.getElementById("media-upload")?.click()}
         >
           <h2 className="text-gray-900 text-lg font-semibold mb-1">
             Arraste e solte o arquivo aqui
           </h2>
           <p className="text-gray-600 text-sm">
-            ou clique aqui para selecionar um arquivo de vídeo
+            ou clique aqui para selecionar um arquivo
           </p>
           
         </div>
         <Spacer y={1}/>
         <Button
           className="bg-[#6F1FC6] text-white font-semibold rounded-full px-8 py-3 w-3/4"
-          onClick={() => document.getElementById("video-upload")?.click()}
+          onClick={() => document.getElementById("media-upload")?.click()}
         >
           Fazer upload
         </Button>
         <Spacer y={1} />
 
-        {fileName && audioURL && (
+        {fileName && mediaURL && (
           <div className="w-full">
             <div className="mb-4">
               <p className="text-white text-sm mb-2">Arquivo selecionado: {fileName}</p>
-              <audio 
-                controls 
-                className="w-full"
-                src={audioURL}
-              >
-                Seu navegador não suporta o elemento de áudio.
-              </audio>
+              {fileType?.startsWith("audio/") ? (
+                <audio 
+                  controls 
+                  className="w-full"
+                  src={mediaURL}
+                >
+                  Seu navegador não suporta o elemento de áudio.
+                </audio>
+              ) : (
+                <video 
+                  controls 
+                  className="w-full max-h-64"
+                  src={mediaURL}
+                >
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              )}
             </div>
-            <Button
-              className="justify-center"
-              color="danger"
-              variant="flat"
-              size="sm"
-              onClick={handleRemove}
-            >
-              Remover arquivo
-            </Button>
+            <div className="flex justify-center">
+              <Button
+                className="justify-center"
+                color="danger"
+                variant="flat"
+                size="sm"
+                onClick={handleRemove}
+              >
+                Remover arquivo
+              </Button>
+            </div>
           </div>
         )}
       </CardBody>
