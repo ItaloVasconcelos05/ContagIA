@@ -5,11 +5,10 @@ import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
 import { Spacer } from "@heroui/spacer";
 
-export default function DragDropAudioUpload() {
+export default function AudioUpload() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-
   const handleFile = (file: File) => {
     if (file && file.type.startsWith("audio/")) {
       setFileName(file.name);
@@ -43,9 +42,7 @@ export default function DragDropAudioUpload() {
 
   return (
     <Card
-      className={`max-w-md mx-auto p-6 text-center transition-colors ${
-        isDragging ? "bg-primary-50 border-primary-400" : ""
-      }`}
+      className="max-w-md mx-auto p-8 rounded-2xl bg-white text-center border-2 border-solid border-[#4B4B53] mt-20 mb-20"
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -58,8 +55,8 @@ export default function DragDropAudioUpload() {
       }}
       onDrop={handleDrop}
     >
-      <CardBody className="flex flex-col items-center gap-4">
-        {/* input escondido */}
+      <CardBody className="flex flex-col items-center justify-center gap-4">
+        {/* Input de arquivo escondido */}
         <input
           id="audio-upload"
           type="file"
@@ -68,40 +65,42 @@ export default function DragDropAudioUpload() {
           style={{ display: "none" }}
         />
 
-        {/* área de drag-and-drop */}
+        {/* Área de drag-and-drop */}
         <div
-          className={`w-full p-6 border-2 border-dashed rounded-lg transition-colors cursor-pointer ${
-            isDragging
-              ? "border-primary bg-primary-50"
-              : "border-default-300 hover:border-primary-300"
-          }`}
+          className="w-full h-30 flex flex-col items-center justify-center cursor-pointer"
           onClick={() => document.getElementById("audio-upload")?.click()}
         >
-          <p className="text-sm text-default-500">
-            {fileName
-              ? "Arraste outro arquivo aqui ou clique para trocar"
-              : "Arraste seu arquivo de áudio aqui ou clique para selecionar"}
+          <h2 className="text-gray-900 text-lg font-semibold mb-1">
+            Arraste e solte o arquivo aqui
+          </h2>
+          <p className="text-gray-600 text-sm">
+            ou clique aqui para selecionar um arquivo de vídeo
           </p>
+          
         </div>
-
+        <Spacer y={1}/>
+        <Button
+          className="bg-[#6F1FC6] text-white font-semibold rounded-full px-8 py-3 w-3/4"
+          onClick={() => document.getElementById("video-upload")?.click()}
+        >
+          Fazer upload
+        </Button>
         <Spacer y={1} />
 
-        {/* informações e player */}
-        {fileName && (
-          <div className="w-full flex flex-col items-center gap-2">
-            <p className="text-sm text-gray-500">
-              Selecionado: <strong>{fileName}</strong>
-            </p>
-
-            {audioURL && (
-              <audio controls className="w-full mt-2">
-                <source src={audioURL} />
-                Seu navegador não suporta o player de áudio.
+        {fileName && audioURL && (
+          <div className="w-full">
+            <div className="mb-4">
+              <p className="text-white text-sm mb-2">Arquivo selecionado: {fileName}</p>
+              <audio 
+                controls 
+                className="w-full"
+                src={audioURL}
+              >
+                Seu navegador não suporta o elemento de áudio.
               </audio>
-            )}
-
-            {/* botão de remover */}
+            </div>
             <Button
+              className="justify-center"
               color="danger"
               variant="flat"
               size="sm"
