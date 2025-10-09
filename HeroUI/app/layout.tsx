@@ -1,13 +1,9 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
-import { Link } from "@heroui/link";
-import clsx from "clsx";
-
 import { Providers } from "./providers";
-
 import { siteConfig } from "@/config/site";
-import { fontSans } from "@/config/fonts";
-import { Navbar } from "@/components/navbar";
+import ColorBar from "@/components/coloredFooter";
+import localFont from 'next/font/local';
 
 export const metadata: Metadata = {
   title: {
@@ -20,6 +16,11 @@ export const metadata: Metadata = {
   },
 };
 
+const globotipoTexto = localFont({
+  src: '../public/fonts/Globotipo-Texto.woff2', // Ajuste o caminho conforme necessário
+  variable: '--font-globotipo', // Variável CSS para uso global
+});
+
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
@@ -27,51 +28,16 @@ export const viewport: Viewport = {
   ],
 };
 
-// export default function RootLayout({
-//   children,
-// }: {
-//   children: React.ReactNode;
-// }) {
-//   return (
-//     <html suppressHydrationWarning lang="en">
-//       <head />
-//       <body
-//         className={clsx(
-//           "min-h-screen text-foreground bg-background font-sans antialiased",
-//           fontSans.variable,
-//         )}
-//       >
-//         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-//           <div className="relative flex flex-col h-screen">
-//             <Navbar />
-//             <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-//               {children}
-//             </main>
-//             <footer className="w-full flex items-center justify-center py-3">
-//               <Link
-//                 isExternal
-//                 className="flex items-center gap-1 text-current"
-//                 href="https://heroui.com?utm_source=next-app-template"
-//                 title="heroui.com homepage"
-//               >
-//                 <span className="text-default-600">Powered by</span>
-//                 <p className="text-primary">HeroUI</p>
-//               </Link>
-//             </footer>
-//           </div>
-//         </Providers>
-//       </body>
-//     </html>
-//   );
-// }
+
 
 export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
-    <html lang="en" className='dark'>
+    <html lang="en" className={`dark ${globotipoTexto.variable}`}>
       <body>
         <Providers>
           {children}
         </Providers>
+        <ColorBar></ColorBar>
       </body>
     </html>
   );
