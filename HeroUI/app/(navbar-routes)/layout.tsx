@@ -4,9 +4,11 @@ import {Navbar} from "@/components/navbar"
 
 export default function NavLayout({children}: { children: React.ReactNode }) {
   return (
-        <Providers>
-            <Navbar></Navbar>
-          {children}
-        </Providers>
+
+      <Providers>
+          <Navbar></Navbar>
+        {children}
+      </Providers>
+    
   );
 }

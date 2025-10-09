@@ -1,10 +1,10 @@
 "use client"
 import MusicCard from "@/components/blurred_card"
+import SearchIcon from "../../../components/inputSearch"
 
 export default function RelatoriosPage() {
     return(
         <div>
-            <h1>Teste</h1>
             <MusicCard></MusicCard>
         </div>
 
