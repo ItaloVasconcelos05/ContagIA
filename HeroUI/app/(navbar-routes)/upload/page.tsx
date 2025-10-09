@@ -1,7 +1,9 @@
+import AudioUpload from "@/components/inputFile"
+
 export default function UploadPage() {
     return(
         <div>
-            <h1>Teste</h1>
+            <AudioUpload></AudioUpload>
         </div>
 
     )
