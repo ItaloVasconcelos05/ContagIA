@@ -28,14 +28,14 @@ export default function Home() {
         ">
       <header className="flex justify-between items-center py-6 px-16">
       
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 w-full">
           <img 
             src="/logoWhiteGlobo.png" 
             alt="Logo Globo" 
           />
         </div>
 
-        <nav className="hidden md:flex space-x-12">
+        <nav className="hidden flex justify-around md:flex space-x-12 w-full">
           <Link href="#" className="text-white hover:text-gray-400 text-lg">
             COMO FUNCIONA?
           </Link>
