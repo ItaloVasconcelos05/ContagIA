@@ -88,10 +88,23 @@ export default function MediaUpload() {
             : 'opacity-0 translate-y-2 pointer-events-none'
         }`}>
           <Button
-            className="bg-[#6F1FC6] text-white font-semibold rounded-full px-8 py-3 w-3/4"
+            className="bg-[#6F1FC6] text-white font-semibold rounded-full px-12 py-4 w-full text-lg"
             onClick={() => document.getElementById("media-upload")?.click()}
           >
             Fazer upload
+          </Button>
+        </div>
+        {/* Botão Enviar aparece quando há arquivo selecionado */}
+        <div className={`transition-all duration-500 ease-in-out transform flex justify-center ${
+          fileName 
+            ? 'opacity-100 translate-y-0' 
+            : 'opacity-0 translate-y-2 pointer-events-none'
+        }`}>
+          <Button
+            className="bg-[#1FC66F] text-white font-semibold rounded-full px-12 py-4 w-full text-lg"
+            onClick={() => {/* ação de envio aqui */}}
+          >
+            Enviar
           </Button>
         </div>
         <Spacer y={1} />
