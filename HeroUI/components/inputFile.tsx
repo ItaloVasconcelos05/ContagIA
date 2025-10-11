@@ -11,6 +11,8 @@ export default function MediaUpload() {
   const [fileType, setFileType] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const urlRef = useRef<string | null>(null);
+  const mediaElementRef = useRef<HTMLAudioElement | HTMLVideoElement | null>(null);
+
   const handleFile = (file: File) => {
     if (file && (file.type.startsWith("audio/") || file.type.startsWith("video/") || file.name.toLowerCase().endsWith('.mxf'))) {
       setFileName(file.name);
@@ -42,6 +44,11 @@ export default function MediaUpload() {
   };
 
   const handleRemove = () => {
+    // Pausa a reprodução se estiver tocando
+    if (mediaElementRef.current) {
+      mediaElementRef.current.pause();
+      mediaElementRef.current.currentTime = 0;
+    }
     setFileName(null);
     setMediaURL(null);
     setFileType(null);
@@ -143,6 +150,7 @@ export default function MediaUpload() {
                   controls 
                   className="w-full"
                   src={mediaURL || undefined}
+                  ref={mediaElementRef as React.RefObject<HTMLAudioElement>}
                 >
                   Seu navegador não suporta o elemento de áudio.
                 </audio>
@@ -151,6 +159,7 @@ export default function MediaUpload() {
                   controls 
                   className="w-full max-h-64"
                   src={mediaURL || undefined}
+                  ref={mediaElementRef as React.RefObject<HTMLVideoElement>}
                 >
                   Seu navegador não suporta o elemento de vídeo.
                   {fileName?.toLowerCase().endsWith('.mxf') && (
@@ -174,6 +183,7 @@ export default function MediaUpload() {
             </div>
           </div>
         </div>
+
       </CardBody>
     </Card>
   );
