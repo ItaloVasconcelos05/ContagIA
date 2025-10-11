@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
 import { Spacer } from "@heroui/spacer";
@@ -10,10 +10,17 @@ export default function MediaUpload() {
   const [mediaURL, setMediaURL] = useState<string | null>(null);
   const [fileType, setFileType] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const urlRef = useRef<string | null>(null);
   const handleFile = (file: File) => {
     if (file && (file.type.startsWith("audio/") || file.type.startsWith("video/") || file.name.toLowerCase().endsWith('.mxf'))) {
       setFileName(file.name);
-      setMediaURL(URL.createObjectURL(file));
+      // Revoga URL anterior se existir
+      if (urlRef.current) {
+        URL.revokeObjectURL(urlRef.current);
+      }
+      const newUrl = URL.createObjectURL(file);
+      urlRef.current = newUrl;
+      setMediaURL(newUrl);
       setFileType(file.type || 'video/mxf');
     } else {
       alert("Por favor, envie um arquivo de áudio ou vídeo válido 🎵🎬");
@@ -38,10 +45,24 @@ export default function MediaUpload() {
     setFileName(null);
     setMediaURL(null);
     setFileType(null);
+    // Revoga URL do objeto
+    if (urlRef.current) {
+      URL.revokeObjectURL(urlRef.current);
+      urlRef.current = null;
+    }
     // limpa o input de arquivo
     const input = document.getElementById("media-upload") as HTMLInputElement;
     if (input) input.value = "";
   };
+
+  // Revoga URL ao desmontar o componente
+  useEffect(() => {
+    return () => {
+      if (urlRef.current) {
+        URL.revokeObjectURL(urlRef.current);
+      }
+    };
+  }, []);
 
   return (
     <Card
