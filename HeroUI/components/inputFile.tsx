@@ -82,7 +82,7 @@ export default function MediaUpload() {
           
         </div>
         <Spacer y={1}/>
-        <div className={`transition-all duration-500 ease-in-out transform ${
+        <div className={`transition-all duration-500 ease-in-out transform flex justify-center ${
           !fileName 
             ? 'opacity-100 translate-y-0' 
             : 'opacity-0 translate-y-2 pointer-events-none'
